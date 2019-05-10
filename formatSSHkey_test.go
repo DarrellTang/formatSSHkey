@@ -61,9 +61,9 @@ lecz7BaJmbTY0oMaO+BXwx
 	}
 }
 
-// func TestReplaceDoubleQuotes(t *testing.T)  {
-
-// }
+func TestReplaceDoubleQuotes(t *testing.T) 
+	
+}
 
 // func TestReplaceComments(t *testing.T)  {
 
