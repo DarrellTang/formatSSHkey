@@ -61,8 +61,20 @@ lecz7BaJmbTY0oMaO+BXwx
 	}
 }
 
-func TestReplaceDoubleQuotes(t *testing.T) 
-	
+func TestReplaceDoubleQuotes(t *testing.T) {
+	tables := []struct {
+		str    string
+		result string
+	}{
+		{"---- BEGIN SSH2 PUBLIC KEY ----\\nComment: \"2048-bit RSA, converted by dtang@fr@US-WS-314 from OpenSSH\"\\nAAAAB3NzaC1yc2EAAAADAQABAAABAQCeyOzR4zGPxDdVySvVkX6dBWrzTNRb8menTXtPmG\\nOD+EQxw5Lna4/Dg2uH4Gi9ZNnVhOqwYXvGPr8DMQwVykdwVhc7Z1Ez+2XMa2py9i/MnK5O\\nveobE7MWqBJ3RgwBK+JI1MbMQeDuiTSPJv+tt7tAJ6sJFigbgfgnineUo4AUs2A8KshPnV\\nsJmBgSWggN0Kk+xSp5ScmkS+vh7Dm2szM6dUw384nJ464U66ej7NPl+olnbgj1IVqIegiI\\nzofV0XFkSGCyinlwq6UqQ3eNAg9fOv9rG9TULjrcCH3/GAN7x1E4WCKrEWoHuEU+BZRFiK\\nlecz7BaJmbTY0oMaO+BXwx\\n---- END SSH2 PUBLIC KEY ----\\n", "---- BEGIN SSH2 PUBLIC KEY ----\\nComment: \\\"2048-bit RSA, converted by dtang@fr@US-WS-314 from OpenSSH\\\"\\nAAAAB3NzaC1yc2EAAAADAQABAAABAQCeyOzR4zGPxDdVySvVkX6dBWrzTNRb8menTXtPmG\\nOD+EQxw5Lna4/Dg2uH4Gi9ZNnVhOqwYXvGPr8DMQwVykdwVhc7Z1Ez+2XMa2py9i/MnK5O\\nveobE7MWqBJ3RgwBK+JI1MbMQeDuiTSPJv+tt7tAJ6sJFigbgfgnineUo4AUs2A8KshPnV\\nsJmBgSWggN0Kk+xSp5ScmkS+vh7Dm2szM6dUw384nJ464U66ej7NPl+olnbgj1IVqIegiI\\nzofV0XFkSGCyinlwq6UqQ3eNAg9fOv9rG9TULjrcCH3/GAN7x1E4WCKrEWoHuEU+BZRFiK\\nlecz7BaJmbTY0oMaO+BXwx\\n---- END SSH2 PUBLIC KEY ----\\n"},
+		{"\";slak\"jf;laj\"", "\\\";slak\\\"jf;laj\\\""},
+	}
+	for _, table := range tables {
+		result := replaceDoubleQuotes(table.str)
+		if result != table.result {
+			t.Errorf("Replacing double quote characters of %s was wrong, got %s, want %s", table.str, result, table.result)
+		}
+	}
 }
 
 // func TestReplaceComments(t *testing.T)  {
