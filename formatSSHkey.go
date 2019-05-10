@@ -96,6 +96,24 @@ func getFingerprint(keyfile string) (string, string) {
 	return string(cmdOutput), lasteight
 }
 
+func printHelp() {
+	fmt.Println("Usage: formatSSHkey [sshkeyfilename] [clientname]")
+	fmt.Println()
+	fmt.Println("formatSSHkey will take an ssh keyfile and determine what format it's in (RFC4716/SSH2 or Openssh).")
+	fmt.Println("It will then convert the ssh keyfile to the other format and write it to either \"ssh2.txt\" or \"openssh.txt\".")
+	fmt.Println("The MD5 hash fingerprint of the openssh format key is printed.")
+	fmt.Println("Finally, the client name and key are formatted for copy-pasting into a JSON key-value pair format.")
+	fmt.Println("formatSSHkey takes two positional arguments:")
+	fmt.Println()
+	fmt.Println("[sshkeyfilename]		An ssh Keyfile name (e.g. sshkey.txt or CLIENT_SSH2.pub)")
+	fmt.Println("[clientname]			A client name in all caps (e.g. FONCIA or NORDEA)")
+	fmt.Println()
+	fmt.Println("EXAMPLE")
+	fmt.Println("formatSSHkey ./my_key_file.pub clientname")
+	fmt.Println()
+	os.Exit(0)
+}
+
 func main() {
 	var (
 		keyfilepath string
@@ -110,21 +128,7 @@ func main() {
 		keyfilepath = os.Args[1]
 		clientname = strings.ToUpper(os.Args[2])
 	} else {
-		fmt.Println("Usage: formatSSHkey [sshkeyfilename] [clientname]")
-		fmt.Println()
-		fmt.Println("formatSSHkey will take an ssh keyfile and determine what format it's in (RFC4716/SSH2 or Openssh).")
-		fmt.Println("It will then convert the ssh keyfile to the other format and write it to either \"ssh2.txt\" or \"openssh.txt\".")
-		fmt.Println("The MD5 hash fingerprint of the openssh format key is printed.")
-		fmt.Println("Finally, the client name and key are formatted for copy-pasting into a JSON key-value pair format.")
-		fmt.Println("formatSSHkey takes two positional arguments:")
-		fmt.Println()
-		fmt.Println("[sshkeyfilename]		An ssh Keyfile name (e.g. sshkey.txt or CLIENT_SSH2.pub)")
-		fmt.Println("[clientname]			A client name in all caps (e.g. FONCIA or NORDEA)")
-		fmt.Println()
-		fmt.Println("EXAMPLE")
-		fmt.Println("formatSSHkey ./my_key_file.pub clientname")
-		fmt.Println()
-		os.Exit(0)
+		printHelp()
 	}
 
 	keyfile, err := ioutil.ReadFile(keyfilepath)
@@ -140,7 +144,7 @@ func main() {
 	switch keyformat {
 	default:
 		fmt.Println("This is not a properly formatted SSH Key. formatSSHkey will now exit.")
-		os.Exit(1)
+		os.Exit(0)
 	case "ssh2":
 		fmt.Println("\nThis is an RFC 4716/SSH2 formatted SSH Key.")
 		fmt.Println("Converting to Openssh format.")
@@ -167,7 +171,7 @@ func main() {
 	sshkey = replaceNewlines(sshkey)
 	sshkey = replaceDoubleQuotes(sshkey)
 	sshkey = replaceComments(sshkey, lasteight)
-	fmt.Println("Copy and paste the below text into the platform databag json file (e.g. fr1-chef-repo/data_bags/ads_FR1/fr1prd_a.json)")
+	fmt.Println("Copy and paste the below text into the platform databag json file")
 	fmt.Println("==================================================")
 	fmt.Println("\""+clientname+"\" :", "\""+sshkey+"\"")
 	fmt.Println("==================================================")
